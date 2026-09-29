@@ -934,4 +934,28 @@ async function startServer() {
     }
 }
 
-startServer();
+async function runScraperOnly() {
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
+
+        console.log("MONGODB CONNECTED");
+
+        await refreshPrograms();
+
+        console.log("SCRAPER JOB COMPLETE");
+    } catch (error) {
+        console.error("SCRAPER JOB FAILED:");
+        console.error(error);
+
+        process.exitCode = 1;
+    } finally {
+        await mongoose.disconnect();
+        console.log("MONGODB DISCONNECTED");
+    }
+}
+
+if (process.env.SCRAPE_ONLY === "true") {
+    runScraperOnly();
+} else {
+    startServer();
+}
