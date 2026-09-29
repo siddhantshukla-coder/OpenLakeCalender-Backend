@@ -896,6 +896,12 @@ app.post("/api/refresh", async (req, res) => {
         message: "Program refresh completed",
     });
 });
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    service: "OpenLake Calendar Backend"
+  });
+});
 
 // ============================================================
 // START SERVER
